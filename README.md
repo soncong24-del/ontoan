@@ -89,7 +89,7 @@ Trong Cursor, bấm nút tạo repo và đăng nhập bằng tài khoản GitHub
 1. Vào [app.netlify.com](https://app.netlify.com) bằng cùng tài khoản, hoặc vào User settings → Applications → GitHub và bấm Connect.
 2. Add new site → Import an existing project → GitHub.
 3. Nếu GitHub hỏi quyền, chọn repo `ontoan` rồi Authorize.
-4. Chọn repo `ontoan`, nhánh `main`. Build command để `npm run build`, publish directory để `.next`. Không điền `out` hay `public`. Không thêm biến môi trường.
+4. Chọn repo `ontoan`, nhánh `main`. Build command để `npm run build`. Publish directory để trống để plugin Next.js tự chọn. Không điền `out` hay `public`. Không thêm biến môi trường.
 5. Bấm Deploy. Đợi bản build màu xanh. Site có địa chỉ dạng `ten-ngau-nhien.netlify.app`. Có thể đổi tên site thành `ontoan` trong Site configuration → Site details nếu tên còn trống.
 
 ### 3. Gắn ontoan.vn
