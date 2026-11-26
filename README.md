@@ -74,21 +74,45 @@ Giao diện chỉ gọi `getLearningRepository()` trong `src/lib/storage/index.t
 
 Đề đang chấm trên trình duyệt để ra điểm ngay. Khi có đề tính điểm chính thức, nên chuyển bước chấm lên máy chủ để đáp án không đi kèm trang.
 
-## Đưa lên Vercel và trỏ ontoan.vn
+## Đưa lên GitHub và Netlify, rồi trỏ ontoan.vn
 
-1. Đẩy repo lên GitHub. Không commit file `.env` và không đưa mật khẩu nhà đăng ký tên miền vào git.
-2. Vào [vercel.com](https://vercel.com) → Add New → Project → chọn repo. Framework là Next.js. Giai đoạn này không cần biến môi trường.
-3. Deploy. Vercel cho một địa chỉ dạng `ten-du-an.vercel.app`.
-4. Trong project, mở Settings → Domains → thêm `ontoan.vn` và `www.ontoan.vn`.
-5. Đăng nhập nhà đăng ký nơi mua tên miền. Làm đúng bản ghi DNS mà Vercel đang hiện. Thường gặp:
+Chưa cần mua máy chủ. Gói miễn phí của Netlify đủ cho giai đoạn bài giảng và đề này. File `netlify.toml` đã khai báo lệnh build và thư mục xuất, nên Netlify không cần cấu hình thêm. Không ghim plugin Next.js: Netlify tự dùng adapter OpenNext cho Next.js 15.
+
+### 1. Đẩy code lên GitHub
+
+Tạo một repo trống trên GitHub, rồi trong thư mục dự án:
+
+```bash
+git remote add github https://github.com/<ten-tai-khoan>/<ten-repo>.git
+git push -u github main
+```
+
+Không commit file `.env`. Không đưa mật khẩu nhà đăng ký tên miền vào git, README hay issue. Nếu mật khẩu đã lộ trong một cuộc hội thoại, hãy đổi lại ở nhà đăng ký.
+
+### 2. Nối Netlify với GitHub
+
+1. Vào [app.netlify.com](https://app.netlify.com) → Add new site → Import an existing project → GitHub.
+2. Cho Netlify quyền đọc repo vừa tạo, rồi chọn repo đó.
+3. Nhánh production: `main`. Build command `npm run build`, publish directory `.next`. Hai giá trị này đã có trong `netlify.toml`. Nếu ô trên Netlify để trống, Netlify đọc file đó. Không điền `out` hay `public`.
+4. Không cần biến môi trường ở giai đoạn này. Deploy site.
+
+Xong bước này, site có địa chỉ dạng `ten-ngau-nhien.netlify.app`. Mỗi lần đẩy lên nhánh `main`, Netlify build lại.
+
+### 3. Gắn ontoan.vn
+
+1. Trong site Netlify, mở Domain management → Add a domain → nhập `ontoan.vn`. Netlify sẽ gợi ý thêm `www.ontoan.vn`.
+2. Đặt `ontoan.vn` làm domain chính để `www` chuyển về tên không có www.
+3. Giữ DNS ở nhà đăng ký (Mat Bao, Tenten, Nhân Hòa, Inet, PA Việt Nam…). Hầu hết nhà đăng ký `.vn` không có bản ghi ALIAS, nên dùng bản ghi A cho tên gốc:
 
    | Loại | Tên | Giá trị |
    | --- | --- | --- |
-   | A | `@` | `76.76.21.21` |
-   | CNAME | `www` | `cname.vercel-dns.com` |
+   | A | `@` | `75.2.60.5` |
+   | CNAME | `www` | `ten-site-cua-ban.netlify.app` |
 
-6. Đợi DNS, từ vài phút tới vài giờ. Khi Vercel xác minh xong, HTTPS tự bật.
+   `ten-site-cua-ban.netlify.app` là địa chỉ Netlify hiện ở Site overview, không phải `apex-loadbalancer.netlify.com`.
 
-Mật khẩu tên miền chỉ để đăng nhập nhà đăng ký. Không dán mật khẩu vào mã nguồn, README hay issue. Nếu mật khẩu đã lộ trong một cuộc hội thoại, hãy đổi lại ở nhà đăng ký.
+4. Xóa các bản ghi A và AAAA cũ của `@` nếu còn. Netlify không cấp chứng chỉ khi còn bản ghi AAAA hoặc nhiều bản ghi A.
+5. Nếu nhà đăng ký có ALIAS, ANAME hoặc CNAME flattened, có thể trỏ `@` tới `apex-loadbalancer.netlify.com` thay cho bản ghi A. Chỉ chọn một trong hai cách.
+6. Đợi DNS, thường vài phút đến vài giờ. Trong Netlify, trạng thái domain chuyển từ chờ DNS sang đã xác minh thì HTTPS tự bật.
 
-Chưa cần mua máy chủ riêng. Gói miễn phí của Vercel đủ cho giai đoạn bài giảng và đề tĩnh này.
+Đối chiếu lại đúng số và hostname mà trang Domain management của site đang hiện, vì đó là nguồn mới nhất của Netlify.
