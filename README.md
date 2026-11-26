@@ -76,43 +76,31 @@ Giao diện chỉ gọi `getLearningRepository()` trong `src/lib/storage/index.t
 
 ## Đưa lên GitHub và Netlify, rồi trỏ ontoan.vn
 
-Chưa cần mua máy chủ. Gói miễn phí của Netlify đủ cho giai đoạn bài giảng và đề này. File `netlify.toml` đã khai báo lệnh build và thư mục xuất, nên Netlify không cần cấu hình thêm. Không ghim plugin Next.js: Netlify tự dùng adapter OpenNext cho Next.js 15.
+Chưa cần mua máy chủ. Gói miễn phí của Netlify đủ cho giai đoạn này. File `netlify.toml` đã khai báo lệnh build `npm run build` và thư mục `.next`.
 
-### 1. Đẩy code lên GitHub
+Không dán mật khẩu nhà đăng ký tên miền vào GitHub. Nếu mật khẩu đã lộ trong cuộc hội thoại, hãy đổi mật khẩu đó trước khi sửa DNS.
 
-Tạo một repo trống trên GitHub, rồi trong thư mục dự án:
+### 1. Đưa code lên GitHub
 
-```bash
-git remote add github https://github.com/<ten-tai-khoan>/<ten-repo>.git
-git push -u github main
-```
+Trong Cursor, bấm nút tạo repo và đăng nhập bằng tài khoản GitHub vừa lập. Đặt tên repo `ontoan`, để nhánh `main`. Xong, mở `https://github.com/<ten-cua-ban>/ontoan` và thấy các thư mục `src` cùng file `netlify.toml`.
 
-Không commit file `.env`. Không đưa mật khẩu nhà đăng ký tên miền vào git, README hay issue. Nếu mật khẩu đã lộ trong một cuộc hội thoại, hãy đổi lại ở nhà đăng ký.
+### 2. Nối Netlify
 
-### 2. Nối Netlify với GitHub
-
-1. Vào [app.netlify.com](https://app.netlify.com) → Add new site → Import an existing project → GitHub.
-2. Cho Netlify quyền đọc repo vừa tạo, rồi chọn repo đó.
-3. Nhánh production: `main`. Build command `npm run build`, publish directory `.next`. Hai giá trị này đã có trong `netlify.toml`. Nếu ô trên Netlify để trống, Netlify đọc file đó. Không điền `out` hay `public`.
-4. Không cần biến môi trường ở giai đoạn này. Deploy site.
-
-Xong bước này, site có địa chỉ dạng `ten-ngau-nhien.netlify.app`. Mỗi lần đẩy lên nhánh `main`, Netlify build lại.
+1. Vào [app.netlify.com](https://app.netlify.com) bằng cùng tài khoản, hoặc vào User settings → Applications → GitHub và bấm Connect.
+2. Add new site → Import an existing project → GitHub.
+3. Nếu GitHub hỏi quyền, chọn repo `ontoan` rồi Authorize.
+4. Chọn repo `ontoan`, nhánh `main`. Build command để `npm run build`, publish directory để `.next`. Không điền `out` hay `public`. Không thêm biến môi trường.
+5. Bấm Deploy. Đợi bản build màu xanh. Site có địa chỉ dạng `ten-ngau-nhien.netlify.app`. Có thể đổi tên site thành `ontoan` trong Site configuration → Site details nếu tên còn trống.
 
 ### 3. Gắn ontoan.vn
 
-1. Trong site Netlify, mở Domain management → Add a domain → nhập `ontoan.vn`. Netlify sẽ gợi ý thêm `www.ontoan.vn`.
-2. Đặt `ontoan.vn` làm domain chính để `www` chuyển về tên không có www.
-3. Giữ DNS ở nhà đăng ký (Mat Bao, Tenten, Nhân Hòa, Inet, PA Việt Nam…). Hầu hết nhà đăng ký `.vn` không có bản ghi ALIAS, nên dùng bản ghi A cho tên gốc:
+1. Trong site Netlify: Domain management → Add a domain → nhập `ontoan.vn`. Thêm luôn `www.ontoan.vn` nếu được hỏi. Đặt `ontoan.vn` làm domain chính.
+2. Đăng nhập nhà đăng ký nơi mua tên miền, mở mục DNS / Quản lý bản ghi. Xóa bản ghi A và AAAA cũ của tên gốc nếu còn.
+3. Tạo đúng hai bản ghi:
 
    | Loại | Tên | Giá trị |
    | --- | --- | --- |
    | A | `@` | `75.2.60.5` |
-   | CNAME | `www` | `ten-site-cua-ban.netlify.app` |
+   | CNAME | `www` | địa chỉ `....netlify.app` hiện trên Site overview |
 
-   `ten-site-cua-ban.netlify.app` là địa chỉ Netlify hiện ở Site overview, không phải `apex-loadbalancer.netlify.com`.
-
-4. Xóa các bản ghi A và AAAA cũ của `@` nếu còn. Netlify không cấp chứng chỉ khi còn bản ghi AAAA hoặc nhiều bản ghi A.
-5. Nếu nhà đăng ký có ALIAS, ANAME hoặc CNAME flattened, có thể trỏ `@` tới `apex-loadbalancer.netlify.com` thay cho bản ghi A. Chỉ chọn một trong hai cách.
-6. Đợi DNS, thường vài phút đến vài giờ. Trong Netlify, trạng thái domain chuyển từ chờ DNS sang đã xác minh thì HTTPS tự bật.
-
-Đối chiếu lại đúng số và hostname mà trang Domain management của site đang hiện, vì đó là nguồn mới nhất của Netlify.
+4. Đợi từ vài phút đến vài giờ. Khi Netlify báo domain đã xác minh, HTTPS tự bật. Mở `https://ontoan.vn` để kiểm tra.
