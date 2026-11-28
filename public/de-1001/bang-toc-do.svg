@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 120" font-family="Be Vietnam Pro, Arial, sans-serif">
+  <rect width="640" height="120" fill="#fff"/>
+  <g font-size="15" fill="#153565">
+    <rect x="8" y="16" width="120" height="40" fill="#e7f3fb" stroke="#153565"/>
+    <rect x="8" y="56" width="120" height="40" fill="#fff" stroke="#153565"/>
+    <text x="68" y="42" text-anchor="middle">Tốc độ (km/h)</text>
+    <text x="68" y="82" text-anchor="middle">Số xe ô tô</text>
+  </g>
+  <g font-size="16" fill="#1e2f41" text-anchor="middle">
+    <g>
+      <rect x="128" y="16" width="96" height="40" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="224" y="16" width="96" height="40" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="320" y="16" width="96" height="40" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="416" y="16" width="96" height="40" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="512" y="16" width="112" height="40" fill="#f4f8fb" stroke="#153565"/>
+      <text x="176" y="42">[50;52)</text>
+      <text x="272" y="42">[52;54)</text>
+      <text x="368" y="42">[54;56)</text>
+      <text x="464" y="42">[56;58)</text>
+      <text x="568" y="42">[58;60)</text>
+    </g>
+    <g font-weight="700">
+      <rect x="128" y="56" width="96" height="40" fill="#fff" stroke="#153565"/>
+      <rect x="224" y="56" width="96" height="40" fill="#fff" stroke="#153565"/>
+      <rect x="320" y="56" width="96" height="40" fill="#fff" stroke="#153565"/>
+      <rect x="416" y="56" width="96" height="40" fill="#fff" stroke="#153565"/>
+      <rect x="512" y="56" width="112" height="40" fill="#fff" stroke="#153565"/>
+      <text x="176" y="82">40</text>
+      <text x="272" y="82">32</text>
+      <text x="368" y="82">25</text>
+      <text x="464" y="82">20</text>
+      <text x="568" y="82">8</text>
+    </g>
+  </g>
+</svg>

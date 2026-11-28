@@ -268,6 +268,10 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
         <h2 id="de-cau-hoi" tabIndex={-1} className="mt-4 text-[18px] leading-8 font-medium text-[#1e2f41] outline-none">
           <RichText text={question.prompt} />
         </h2>
+        {question.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={question.imageUrl} alt="Hình minh họa của câu" className="mt-3 max-h-80 w-full max-w-xl rounded-xl border border-[#d0dcf0] bg-white object-contain" />
+        ) : null}
         {question.type === "mcq" ? (
           <fieldset className="mt-4 space-y-2">
             <legend className="sr-only">Chọn một đáp án</legend>

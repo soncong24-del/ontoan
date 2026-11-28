@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" font-family="Be Vietnam Pro, Arial, sans-serif">
+  <rect width="420" height="320" fill="#fff"/>
+  <g stroke="#1482c0" stroke-width="1.3">
+    <line x1="210" y1="34" x2="210" y2="108"/>
+    <line x1="210" y1="34" x2="86" y2="188"/>
+    <line x1="210" y1="34" x2="210" y2="252"/>
+    <line x1="210" y1="34" x2="334" y2="168"/>
+  </g>
+  <polygon points="210,108 86,188 210,252 334,168" fill="#f4f8fb" stroke="#153565" stroke-width="1.8"/>
+  <line x1="210" y1="108" x2="210" y2="252" stroke="#8aa0b8" stroke-width="1"/>
+  <line x1="86" y1="188" x2="334" y2="168" stroke="#8aa0b8" stroke-width="1"/>
+  <circle cx="210" cy="34" r="4" fill="#ff792f"/>
+  <circle cx="210" cy="186" r="3.5" fill="#1482c0"/>
+  <g font-size="16" font-weight="700" fill="#153565">
+    <text x="218" y="30">I</text>
+    <text x="198" y="100">A</text>
+    <text x="62" y="192">B</text>
+    <text x="200" y="274">C</text>
+    <text x="342" y="166">D</text>
+    <text x="218" y="180" fill="#1482c0">O'</text>
+  </g>
+</svg>

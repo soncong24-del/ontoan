@@ -106,7 +106,7 @@ function assertContentIntegrity() {
     expectCount(grade, "khao-sat", 1);
   }
   expectCount("12", "giua-ki-1", 10);
-  expectCount("12", "hoc-ki-1", 10);
+  expectCount("12", "hoc-ki-1", 11);
   expectCount("12", "giua-ki-2", 10);
   expectCount("12", "hoc-ki-2", 10);
   expectCount("12", "thi-thu-thpt", 10);

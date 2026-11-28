@@ -1,6 +1,7 @@
 import type { Quiz, QuizSummary } from "@/types";
 import { grade10Exams } from "@/data/exams/grade10";
 import { grade11Exams } from "@/data/exams/grade11";
+import { de1001 } from "@/data/exams/de-1001";
 import { grade12SemesterExams } from "@/data/exams/grade12";
 import { thptExams } from "@/data/exams/thpt";
 import daoHam from "@/data/quizzes/de-dao-ham";
@@ -20,6 +21,7 @@ const quizzes: Quiz[] = [
   ...grade10Exams(),
   ...grade11Exams(),
   ...grade12SemesterExams(),
+  de1001(),
   ...thptExams(),
 ];
 

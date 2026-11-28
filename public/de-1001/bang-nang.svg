@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 130" font-family="Be Vietnam Pro, Arial, sans-serif">
+  <rect width="760" height="130" fill="#fff"/>
+  <g font-size="14" fill="#153565">
+    <rect x="8" y="16" width="88" height="48" fill="#e7f3fb" stroke="#153565"/>
+    <rect x="8" y="64" width="88" height="44" fill="#fff" stroke="#153565"/>
+    <text x="52" y="36" text-anchor="middle">Số giờ</text>
+    <text x="52" y="54" text-anchor="middle">có nắng</text>
+    <text x="52" y="92" text-anchor="middle">Số năm</text>
+  </g>
+  <g font-size="14" fill="#1e2f41" text-anchor="middle">
+    <g>
+      <rect x="96" y="16" width="104" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="200" y="16" width="108" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="308" y="16" width="108" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="416" y="16" width="108" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="524" y="16" width="108" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <rect x="632" y="16" width="116" height="48" fill="#f4f8fb" stroke="#153565"/>
+      <text x="148" y="46">[90;100)</text>
+      <text x="254" y="46">[100;110)</text>
+      <text x="362" y="46">[110;120)</text>
+      <text x="470" y="46">[120;130)</text>
+      <text x="578" y="46">[130;140)</text>
+      <text x="690" y="46">[140;150)</text>
+    </g>
+    <g font-size="18" font-weight="700">
+      <rect x="96" y="64" width="104" height="44" fill="#fff" stroke="#153565"/>
+      <rect x="200" y="64" width="108" height="44" fill="#fff" stroke="#153565"/>
+      <rect x="308" y="64" width="108" height="44" fill="#fff" stroke="#153565"/>
+      <rect x="416" y="64" width="108" height="44" fill="#fff" stroke="#153565"/>
+      <rect x="524" y="64" width="108" height="44" fill="#fff" stroke="#153565"/>
+      <rect x="632" y="64" width="116" height="44" fill="#fff" stroke="#153565"/>
+      <text x="148" y="92">2</text>
+      <text x="254" y="92">3</text>
+      <text x="362" y="92">4</text>
+      <text x="470" y="92">8</text>
+      <text x="578" y="92">3</text>
+      <text x="690" y="92">2</text>
+    </g>
+  </g>
+</svg>
