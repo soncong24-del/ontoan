@@ -78,6 +78,8 @@ Giao diện chỉ gọi `getLearningRepository()` trong `src/lib/storage/index.t
 
 Học sinh đăng ký tại `/dang-ky` và đăng nhập tại `/dang-nhap`. Khách vẫn làm đề được; kết quả nằm trên máy. Khi đã đăng nhập, bài nộp được lưu vào tài khoản (Netlify Blobs trên site thật, file `.data/` khi chạy local) và hiện ở `/tien-do` trên máy khác.
 
+Site thật đọc Blobs qua API, dùng biến `ONTOAN_BLOBS_TOKEN` (token Netlify, chỉ đặt trong Environment variables của site, không ghi vào git) và `ONTOAN_SITE_ID` nếu cần đổi site. Thiếu token thì đăng ký báo lỗi rõ, còn đề có sẵn trong code vẫn mở được.
+
 ## Quản trị đề tại `/admin`
 
 Chỉ tài khoản có vai trò quản trị vào được. Trang và API đều kiểm tra vai trò trên máy chủ.
@@ -132,7 +134,7 @@ Trong Cursor, bấm nút tạo repo và đăng nhập bằng tài khoản GitHub
 1. Vào [app.netlify.com](https://app.netlify.com) bằng cùng tài khoản, hoặc vào User settings → Applications → GitHub và bấm Connect.
 2. Add new site → Import an existing project → GitHub.
 3. Nếu GitHub hỏi quyền, chọn repo `ontoan` rồi Authorize.
-4. Chọn repo `ontoan`, nhánh `main`. Build command để `npm run build`. Publish directory để trống để plugin Next.js tự chọn. Không điền `out` hay `public`. Không thêm biến môi trường.
+4. Chọn repo `ontoan`, nhánh `main`. Build command để `npm run build`. Publish directory để trống để plugin Next.js tự chọn. Không điền `out` hay `public`. Giữ biến `ONTOAN_BLOBS_TOKEN` đã có trên site. `ONTOAN_ADMIN_USERNAME` thêm sau khi có tài khoản quản trị.
 5. Bấm Deploy. Đợi bản build màu xanh. Site có địa chỉ dạng `ten-ngau-nhien.netlify.app`. Có thể đổi tên site thành `ontoan` trong Site configuration → Site details nếu tên còn trống.
 
 ### 3. Gắn ontoan.vn

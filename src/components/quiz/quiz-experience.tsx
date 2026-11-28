@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Flag } from "lucide-react";
+import { QuestionBoundary } from "@/components/quiz/question-boundary";
 import { QuizResults } from "@/components/quiz/quiz-results";
 import { RichText } from "@/components/math/rich-text";
 import { Button } from "@/components/ui/button";
@@ -240,6 +241,9 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
   }
 
   const question = quiz.questions[index];
+  if (!question) {
+    return <p className="text-sm text-[#5a6173]">Không thấy câu hỏi này trong đề.</p>;
+  }
   const answeredCount = quiz.questions.filter((item) => (answers[item.id] ?? "").trim()).length;
   const blankCount = quiz.questions.length - answeredCount;
 
@@ -260,6 +264,7 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
             {mode === "timed" ? formatClock(remaining) : "Không tính giờ"}
           </p>
         </div>
+        <QuestionBoundary key={question.id} label={`câu ${index + 1}`}>
         <h2 id="de-cau-hoi" tabIndex={-1} className="mt-4 text-[18px] leading-8 font-medium text-[#1e2f41] outline-none">
           <RichText text={question.prompt} />
         </h2>
@@ -339,6 +344,7 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
             />
           </div>
         )}
+        </QuestionBoundary>
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <Button variant="outline" onClick={() => setIndex((value) => Math.max(0, value - 1))} disabled={index === 0}>
             Câu trước
