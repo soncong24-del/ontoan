@@ -9,7 +9,7 @@ import { MasteryBadge } from "@/components/site/mastery-badge";
 import { Badge } from "@/components/ui/badge";
 import { useQuizAttempts } from "@/lib/storage/use-learning-store";
 import { formatScore, pluralMinutes } from "@/lib/format";
-import { DIFFICULTIES, difficultyLabel, GRADES, gradeLabel, topicLabel } from "@/lib/labels";
+import { DIFFICULTIES, difficultyLabel, EXAM_TYPES, examTypeLabel, GRADES, gradeLabel, topicLabel } from "@/lib/labels";
 import { bestScore, masteryFromScore } from "@/lib/mastery";
 import { includesFold } from "@/lib/text";
 import type { QuizSummary } from "@/types";
@@ -29,6 +29,7 @@ export function QuizCatalog({ quizzes }: { quizzes: QuizSummary[] }) {
   const grade = searchParams.get("khoi") ?? "all";
   const difficulty = searchParams.get("do-kho") ?? "all";
   const duration = searchParams.get("thoi-luong") ?? "all";
+  const examType = searchParams.get("loai") ?? "all";
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
 
   function setFilter(key: string, value: string) {
@@ -42,6 +43,7 @@ export function QuizCatalog({ quizzes }: { quizzes: QuizSummary[] }) {
   const filtered = useMemo(() => {
     return quizzes.filter((quiz) => {
       if (grade !== "all" && quiz.grade !== grade) return false;
+      if (examType !== "all" && quiz.examType !== examType) return false;
       if (difficulty !== "all" && quiz.difficulty !== difficulty) return false;
       if (duration === "20" && quiz.durationMinutes > 20) return false;
       if (duration === "30" && quiz.durationMinutes > 30) return false;
@@ -49,7 +51,7 @@ export function QuizCatalog({ quizzes }: { quizzes: QuizSummary[] }) {
       if (!query.trim()) return true;
       return includesFold(`${quiz.title} ${quiz.summary}`, query);
     });
-  }, [quizzes, grade, difficulty, duration, query]);
+  }, [quizzes, grade, difficulty, duration, examType, query]);
 
   return (
     <div className="space-y-5">
@@ -66,6 +68,14 @@ export function QuizCatalog({ quizzes }: { quizzes: QuizSummary[] }) {
         <Chip active={difficulty === "all"} onClick={() => setFilter("do-kho", "all")}>Mọi mức độ</Chip>
         {DIFFICULTIES.map((item) => (
           <Chip key={item.id} active={difficulty === item.id} onClick={() => setFilter("do-kho", item.id)}>
+            {item.label}
+          </Chip>
+        ))}
+      </div>
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        <Chip active={examType === "all"} onClick={() => setFilter("loai", "all")}>Mọi loại đề</Chip>
+        {EXAM_TYPES.map((item) => (
+          <Chip key={item.id} active={examType === item.id} onClick={() => setFilter("loai", item.id)}>
             {item.label}
           </Chip>
         ))}
@@ -97,6 +107,7 @@ export function QuizCatalog({ quizzes }: { quizzes: QuizSummary[] }) {
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">{gradeLabel(quiz.grade)}</Badge>
                   <Badge variant="outline">{difficultyLabel(quiz.difficulty)}</Badge>
+                  <Badge variant="outline">{examTypeLabel(quiz.examType)}</Badge>
                   <MasteryBadge id={masteryFromScore(best)} className="ml-auto" />
                 </div>
                 <h2 className="mt-3 text-lg font-bold text-[#153565]">{quiz.title}</h2>

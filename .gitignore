@@ -37,6 +37,9 @@ yarn-error.log*
 .vercel
 .netlify
 
+# tài khoản và bài làm khi chạy máy local
+.data
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

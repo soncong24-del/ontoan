@@ -74,6 +74,49 @@ Giao diện chỉ gọi `getLearningRepository()` trong `src/lib/storage/index.t
 
 Đề đang chấm trên trình duyệt để ra điểm ngay. Khi có đề tính điểm chính thức, nên chuyển bước chấm lên máy chủ để đáp án không đi kèm trang.
 
+## Tài khoản học sinh
+
+Học sinh đăng ký tại `/dang-ky` và đăng nhập tại `/dang-nhap`. Khách vẫn làm đề được; kết quả nằm trên máy. Khi đã đăng nhập, bài nộp được lưu vào tài khoản (Netlify Blobs trên site thật, file `.data/` khi chạy local) và hiện ở `/tien-do` trên máy khác.
+
+## Quản trị đề tại `/admin`
+
+Chỉ tài khoản có vai trò quản trị vào được. Trang và API đều kiểm tra vai trò trên máy chủ.
+
+Cách tạo quản trị viên lần đầu:
+
+1. Vào https://ontoan.vn/dang-ky và tạo tài khoản bình thường. Nhớ tên đăng nhập (không dấu).
+2. Trên Netlify, mở site `ontoan-vn` → **Project configuration** → **Environment variables**.
+3. Thêm biến `ONTOAN_ADMIN_USERNAME` với giá trị đúng tên đăng nhập đó, áp dụng cho Production.
+4. Bấm **Trigger deploy** hoặc đẩy một commit để biến có hiệu lực.
+5. Đăng nhập lại. Menu sẽ có **Quản trị**. Mở https://ontoan.vn/admin.
+
+Trong quản trị: **Thêm đề**, điền tên, khối, loại đề, số phút, từng câu (trắc nghiệm, đúng/sai 4 ý, hoặc trả lời ngắn), lời giải có `$công thức$`, link YouTube và ảnh. Bấm **Lưu đề**. Học sinh thấy ngay, không cần sửa code. Bỏ chọn **Hiện đề cho học sinh** để ẩn. Đề có sẵn trong code cũng hiện trong danh sách; bấm **Sửa** rồi **Lưu** là bản trên web được dùng thay cho file.
+
+Hồ sơ đăng ký khóa học nằm ở `/admin/dang-ky`.
+
+## Gắn video YouTube vào lời giải
+
+Trong file đề (`src/data`) hoặc trong trang quản trị, dán một trong các dạng:
+
+- `https://www.youtube.com/watch?v=VIDEO_ID`
+- `https://youtu.be/VIDEO_ID`
+- `https://www.youtube.com/embed/VIDEO_ID`
+
+Gắn vào `videoUrl` của cả đề, hoặc `videoUrl` của từng câu. Để trống thì khung video không hiện. Đề mẫu `de-12-giua-ki-1-01` đang gắn một video để xem thử; hãy thay bằng video chữa của giáo viên.
+
+## Đăng ký khóa học và email
+
+Học sinh đã đăng nhập mở một khóa tại `/khoa-hoc` và gửi họ tên, số điện thoại, email, lớp/trường, khóa học, ghi chú. Hồ sơ được lưu trên site.
+
+Để email tới **soncong24@gmail.com** mỗi khi có hồ sơ mới:
+
+1. Netlify → site `ontoan-vn` → **Forms**.
+2. Chọn form `dang-ky-khoa-hoc`.
+3. **Form notifications** → **Add notification** → **Email notification**.
+4. Điền `soncong24@gmail.com` và lưu.
+
+Form được khai báo trong `public/netlify-forms.html` để Netlify nhận diện lúc deploy.
+
 ## Đưa lên GitHub và Netlify, rồi trỏ ontoan.vn
 
 Chưa cần mua máy chủ. Gói miễn phí của Netlify đủ cho giai đoạn này. File `netlify.toml` đã khai báo lệnh build `npm run build` và thư mục `.next`.

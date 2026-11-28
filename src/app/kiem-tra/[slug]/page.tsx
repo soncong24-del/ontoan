@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { QuizExperience } from "@/components/quiz/quiz-experience";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
-import { getQuiz, getQuizzes } from "@/data";
+import { getQuizzes } from "@/data";
+import { getPublicQuiz } from "@/lib/server/exams";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return getQuizzes().map((quiz) => ({ slug: quiz.slug }));
@@ -13,14 +17,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const quiz = getQuiz(slug);
+  const quiz = await getPublicQuiz(slug);
   if (!quiz) return { title: "Không thấy đề" };
   return { title: quiz.title, description: quiz.summary };
 }
 
 export default async function QuizPage({ params }: Props) {
+  await connection();
   const { slug } = await params;
-  const quiz = getQuiz(slug);
+  const quiz = await getPublicQuiz(slug);
   if (!quiz) notFound();
 
   return (

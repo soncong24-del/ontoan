@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { AccountMenu } from "@/components/auth/account-menu";
 import { Logo } from "@/components/site/logo";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { GRADES } from "@/lib/labels";
@@ -46,6 +47,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-2">
+          <AccountMenu />
           <Link
             href="/kiem-tra"
             className={cn(buttonVariants({ size: "default" }), "hidden bg-[#ff792f] text-white hover:bg-[#e56a24] sm:inline-flex")}
@@ -74,6 +76,12 @@ export function SiteHeader() {
                     {item.label}
                   </Link>
                 ))}
+                <Link href="/dang-nhap" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-base font-semibold text-[#153565] hover:bg-[#f4f8fb]">
+                  Đăng nhập
+                </Link>
+                <Link href="/admin" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-base font-semibold text-[#ff792f] hover:bg-[#fff3ef]">
+                  Quản trị
+                </Link>
                 <p className="mt-4 px-3 text-xs font-semibold tracking-wide text-[#5a6173] uppercase">Theo lớp</p>
                 {GRADES.map((grade) => (
                   <Link

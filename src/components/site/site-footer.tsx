@@ -9,7 +9,20 @@ export function SiteFooter() {
         <div className="md:col-span-1">
           <Logo />
           <p className="mt-3 text-sm leading-6 text-[#5a6173]">
-            Học toán và luyện đề trắc nghiệm cho học sinh lớp 9 đến lớp 12. Giai đoạn này miễn phí, tiến độ lưu trên trình duyệt của bạn.
+            Học toán và luyện đề trắc nghiệm cho học sinh lớp 9 đến lớp 12.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-[#153565]">
+            Địa chỉ: Số 5 Ngõ 60 Vũ Phạm Hàm, Hà Nội.
+          </p>
+          <p className="text-sm leading-6 text-[#153565]">
+            Điện thoại liên hệ:{" "}
+            <a className="font-semibold text-[#1482c0]" href="tel:0982779554">
+              0982779554
+            </a>{" "}
+            hoặc{" "}
+            <a className="font-semibold text-[#1482c0]" href="tel:0856737595">
+              0856737595
+            </a>
           </p>
         </div>
         <div>

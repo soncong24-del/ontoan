@@ -7,9 +7,11 @@ export function formatVnd(value: number): string {
 }
 
 export function formatScore(score: number): string {
+  const hundredths = Math.round(score * 100);
+  const digits = hundredths % 100 === 0 ? 0 : hundredths % 10 === 0 ? 1 : 2;
   return new Intl.NumberFormat("vi-VN", {
-    minimumFractionDigits: Number.isInteger(score) ? 0 : 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: 2,
   }).format(score);
 }
 

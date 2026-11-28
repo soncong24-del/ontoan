@@ -1,4 +1,4 @@
-import type { DifficultyId, GradeLevel, TopicId } from "@/types";
+import type { DifficultyId, ExamType, GradeLevel, TopicId } from "@/types";
 
 export const GRADES: { id: GradeLevel; label: string; track: string; blurb: string }[] = [
   {
@@ -50,6 +50,21 @@ export function topicLabel(topic: TopicId): string {
 
 export function difficultyLabel(difficulty: DifficultyId): string {
   return DIFFICULTIES.find((item) => item.id === difficulty)?.label ?? difficulty;
+}
+
+export const EXAM_TYPES: { id: ExamType; label: string }[] = [
+  { id: "giua-ki-1", label: "Giữa kì 1" },
+  { id: "hoc-ki-1", label: "Học kì 1" },
+  { id: "giua-ki-2", label: "Giữa kì 2" },
+  { id: "hoc-ki-2", label: "Học kì 2" },
+  { id: "on-tap", label: "Ôn tập" },
+  { id: "khao-sat", label: "Khảo sát" },
+  { id: "thi-thu-thpt", label: "Thi thử THPT" },
+];
+
+export function examTypeLabel(type: ExamType | undefined): string {
+  if (!type) return "Luyện tập";
+  return EXAM_TYPES.find((item) => item.id === type)?.label ?? type;
 }
 
 export const CALLOUT_LABEL: Record<string, string> = {

@@ -71,6 +71,11 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
       const repo = getLearningRepository();
       repo.saveAttempt(next);
       repo.clearDraft(quiz.slug);
+      void fetch("/api/attempts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(next),
+      });
       setAttempt(next);
       setConfirmOpen(false);
       setPhase("results");
@@ -83,16 +88,28 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
     const repo = getLearningRepository();
     const params = new URLSearchParams(window.location.search);
     const attemptId = params.get("lan");
-    if (attemptId) {
-      const saved = repo.getAttempt(attemptId);
-      if (saved && saved.quizSlug === quiz.slug) {
-        setAttempt(saved);
-        setPhase("results");
-        setReady(true);
-        return;
+    let cancelled = false;
+    async function boot() {
+      if (attemptId) {
+        const saved = repo.getAttempt(attemptId);
+        if (saved && saved.quizSlug === quiz.slug) {
+          setAttempt(saved);
+          setPhase("results");
+          setReady(true);
+          return;
+        }
+        const response = await fetch("/api/attempts");
+        const data = (await response.json()) as { attempts?: QuizAttempt[] };
+        const remote = data.attempts?.find((item) => item.id === attemptId && item.quizSlug === quiz.slug);
+        if (cancelled) return;
+        if (remote) {
+          setAttempt(remote);
+          setPhase("results");
+          setReady(true);
+          return;
+        }
+        setMissing(true);
       }
-      setMissing(true);
-    }
     const draft = repo.getDraft(quiz.slug);
     if (draft) {
       setMode(draft.mode);
@@ -107,7 +124,12 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
       }
       setPhase("running");
     }
-    setReady(true);
+      if (!cancelled) setReady(true);
+    }
+    void boot();
+    return () => {
+      cancelled = true;
+    };
   }, [quiz.slug, quiz.questions.length]);
 
   useEffect(() => {
@@ -267,6 +289,38 @@ export function QuizExperience({ quiz }: { quiz: Quiz }) {
                     <RichText text={choice.text} />
                   </span>
                 </label>
+              );
+            })}
+          </fieldset>
+        ) : question.type === "true-false" ? (
+          <fieldset className="mt-4 space-y-3">
+            <legend className="text-sm font-semibold text-[#153565]">Chọn Đúng hoặc Sai cho từng ý</legend>
+            {question.statements.map((statement, statementIndex) => {
+              const marks = (answers[question.id] ?? "").split(",");
+              const current = marks[statementIndex] ?? "";
+              return (
+                <div key={statement.id} className="rounded-2xl border border-[#d0dcf0] p-3">
+                  <p>
+                    <span className="font-bold">{statement.id}.</span> <RichText text={statement.text} />
+                  </p>
+                  <div className="mt-2 flex gap-3 text-sm">
+                    {["Đ", "S"].map((mark) => (
+                      <label key={mark} className="inline-flex items-center gap-1">
+                        <input
+                          type="radio"
+                          name={`${question.id}-${statement.id}`}
+                          checked={current === mark}
+                          onChange={() => {
+                            const next = question.statements.map((_, index) => marks[index] ?? "");
+                            next[statementIndex] = mark;
+                            setAnswers((state) => ({ ...state, [question.id]: next.join(",") }));
+                          }}
+                        />
+                        {mark === "Đ" ? "Đúng" : "Sai"}
+                      </label>
+                    ))}
+                  </div>
+                </div>
               );
             })}
           </fieldset>

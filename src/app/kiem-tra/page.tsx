@@ -1,15 +1,32 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { QuizCatalog } from "@/components/catalog/quiz-catalog";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
-import { getQuizSummaries } from "@/data";
+import { listPublicQuizzes } from "@/lib/server/exams";
 
 export const metadata: Metadata = {
   title: "Đề kiểm tra trực tuyến",
   description: "Đề toán trắc nghiệm lớp 9 đến lớp 12, chấm điểm ngay và có lời giải.",
 };
+export const dynamic = "force-dynamic";
 
-export default function QuizzesPage() {
+export default async function QuizzesPage() {
+  await connection();
+  const quizzes = (await listPublicQuizzes()).map((quiz) => ({
+    slug: quiz.slug,
+    title: quiz.title,
+    summary: quiz.summary,
+    grade: quiz.grade,
+    topic: quiz.topic,
+    difficulty: quiz.difficulty,
+    durationMinutes: quiz.durationMinutes,
+    questionCount: quiz.questions.length,
+    lessonSlug: quiz.lessonSlug,
+    featured: quiz.featured,
+    examType: quiz.examType,
+    examFormat: quiz.examFormat,
+  }));
   return (
     <Shell>
       <Breadcrumbs items={[{ href: "/", label: "Trang chủ" }, { label: "Đề kiểm tra" }]} />
@@ -19,7 +36,7 @@ export default function QuizzesPage() {
       </p>
       <div className="mt-6">
         <Suspense fallback={<p className="text-sm text-[#5a6173]">Đang mở danh sách đề…</p>}>
-          <QuizCatalog quizzes={getQuizSummaries()} />
+          <QuizCatalog quizzes={quizzes} />
         </Suspense>
       </div>
     </Shell>

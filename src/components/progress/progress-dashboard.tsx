@@ -9,7 +9,7 @@ import { gradeLabel } from "@/lib/labels";
 import { bestScore, masteryFromScore } from "@/lib/mastery";
 import { useLessonProgressList, useQuizAttempts } from "@/lib/storage/use-learning-store";
 import { cn } from "@/lib/utils";
-import type { LessonSummary, QuizSummary } from "@/types";
+import type { LessonSummary, QuizAttempt, QuizSummary } from "@/types";
 
 export function ProgressDashboard({
   lessons,
@@ -21,7 +21,13 @@ export function ProgressDashboard({
   const progress = useLessonProgressList();
   const attempts = useQuizAttempts();
   const [mounted, setMounted] = useState(false);
+  const [accountAttempts, setAccountAttempts] = useState<QuizAttempt[]>([]);
   useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    void fetch("/api/attempts")
+      .then((response) => response.json())
+      .then((data: { attempts?: QuizAttempt[] }) => setAccountAttempts(data.attempts ?? []));
+  }, []);
 
   if (!mounted) {
     return <p className="text-sm text-[#5a6173]">Đang đọc tiến độ trên máy bạn…</p>;
@@ -87,7 +93,18 @@ export function ProgressDashboard({
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-[#153565]">Lịch sử làm đề</h2>
+        <h2 className="text-xl font-bold text-[#153565]">Lịch sử trên tài khoản</h2>
+        {accountAttempts.length === 0 ? (
+          <p className="mt-3 text-sm text-[#5a6173]">
+            Chưa có bài làm nào được lưu vào tài khoản. Hãy đăng nhập rồi nộp một đề. Khách vẫn xem được lịch sử trên máy này ở mục dưới.
+          </p>
+        ) : (
+          <AttemptList attempts={accountAttempts} quizzes={quizzes} />
+        )}
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-[#153565]">Lịch sử trên máy này</h2>
         {attempts.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed border-[#d0dcf0] bg-white px-4 py-6 text-sm text-[#5a6173]">
             Chưa nộp đề nào.
@@ -123,6 +140,28 @@ export function ProgressDashboard({
         )}
       </section>
     </div>
+  );
+}
+
+function AttemptList({ attempts, quizzes }: { attempts: QuizAttempt[]; quizzes: QuizSummary[] }) {
+  return (
+    <ul className="mt-3 space-y-3">
+      {attempts.map((attempt) => {
+        const quiz = quizzes.find((item) => item.slug === attempt.quizSlug);
+        return (
+          <li key={attempt.id} className="rounded-2xl border border-[#d0dcf0] bg-white p-4">
+            <h3 className="font-bold text-[#153565]">{quiz?.title ?? attempt.quizSlug}</h3>
+            <p className="mt-1 text-sm text-[#5a6173]">
+              {formatDateTime(attempt.submittedAt)} · {formatScore(attempt.score)}/10 · {attempt.correctCount}/
+              {attempt.totalCount} câu · {formatDuration(attempt.durationSeconds)}
+            </p>
+            <Link className="mt-2 inline-block text-sm font-semibold text-[#1482c0]" href={`/kiem-tra/${attempt.quizSlug}?lan=${attempt.id}`}>
+              Xem lời giải
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 

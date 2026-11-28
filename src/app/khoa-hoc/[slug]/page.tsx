@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { WaitlistForm } from "@/components/course/waitlist-form";
+import { EnrollForm } from "@/components/course/enroll-form";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { getCourse, getCourses } from "@/data";
 import { formatVnd, pluralMinutes } from "@/lib/format";
@@ -73,7 +73,7 @@ export default async function CoursePage({ params }: Props) {
             Khi mở bán, học viên thanh toán qua {PAYMENT_PROVIDERS.map((item) => item.label).join(", ")}. Đơn sẽ thành ghi danh sau khi cổng báo thành công. Nút thanh toán chưa bật.
           </p>
         </div>
-        <WaitlistForm courseSlug={course.slug} courseTitle={course.title} />
+        <EnrollForm courseTitle={course.title} />
       </div>
     </Shell>
   );

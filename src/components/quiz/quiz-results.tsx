@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { YoutubeFrame } from "@/components/media/youtube-frame";
 import { RichParagraphs, RichText } from "@/components/math/rich-text";
 import { MasteryBadge } from "@/components/site/mastery-badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -57,6 +58,7 @@ export function QuizResults({
           </div>
         </dl>
         <p className="mt-4 text-sm leading-6 text-[#1e2f41]">{scoreMessage(attempt.score)}</p>
+        <YoutubeFrame url={quiz.videoUrl} title={`Video chữa ${quiz.title}`} />
         <div className="mt-5 flex flex-wrap gap-3">
           <Button className="bg-[#ff792f] text-white hover:bg-[#e56a24]" onClick={onRetry}>
             Làm lại
@@ -93,6 +95,23 @@ export function QuizResults({
               <div className="mt-2 text-[17px] leading-8">
                 <RichText text={question.prompt} />
               </div>
+              {question.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={question.imageUrl} alt="" className="mt-3 max-h-64 rounded-xl" />
+              ) : null}
+              {question.type === "true-false" ? (
+                <ul className="mt-3 space-y-2 text-sm">
+                  {question.statements.map((statement) => (
+                    <li key={statement.id} className="rounded-xl border border-[#d0dcf0] px-3 py-2">
+                      <span className="font-bold">{statement.id}.</span> <RichText text={statement.text} />
+                      <span className="mt-1 block text-xs font-semibold text-emerald-700">
+                        Đáp án: {statement.correct ? "Đúng" : "Sai"}
+                      </span>
+                    </li>
+                  ))}
+                  <li>Bạn chọn: {answer || "để trống"}</li>
+                </ul>
+              ) : null}
               {question.type === "mcq" ? (
                 <ul className="mt-3 space-y-2">
                   {question.choices.map((choice) => {
@@ -118,15 +137,16 @@ export function QuizResults({
                     );
                   })}
                 </ul>
-              ) : (
+              ) : question.type === "numeric" ? (
                 <p className="mt-3 text-sm">
                   Bạn nhập: <strong>{answer || "để trống"}</strong>. Đáp số:{" "}
                   <strong>{formatNumberVi(question.correctValue)}</strong>.
                 </p>
-              )}
+              ) : null}
               <div className="mt-4 rounded-xl bg-[#f4f8fb] px-3 py-3 text-sm leading-6">
                 <p className="font-semibold text-[#153565]">Lời giải</p>
                 <RichParagraphs text={question.solution} className="mt-1" />
+                <YoutubeFrame url={question.videoUrl} title={`Video câu ${index + 1}`} />
               </div>
             </li>
           );

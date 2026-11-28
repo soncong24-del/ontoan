@@ -36,6 +36,10 @@ interface QuestionBase {
   prompt: string;
   /** Lời giải từng bước, có thể chứa $...$ và $$...$$. */
   solution: string;
+  /** Link YouTube chữa câu này. Để trống thì không hiện khung video. */
+  videoUrl?: string;
+  /** Ảnh minh họa, là đường dẫn /api/media/... hoặc URL. */
+  imageUrl?: string;
 }
 
 export interface McqQuestion extends QuestionBase {
@@ -51,7 +55,30 @@ export interface NumericQuestion extends QuestionBase {
   tolerance?: number;
 }
 
-export type Question = McqQuestion | NumericQuestion;
+export interface TrueFalseStatement {
+  id: "a" | "b" | "c" | "d";
+  text: string;
+  correct: boolean;
+}
+
+/** Câu đúng/sai của đề THPT từ 2025: 4 ý, chấm 0,1 / 0,25 / 0,5 / 1 điểm. */
+export interface TrueFalseQuestion extends QuestionBase {
+  type: "true-false";
+  statements: TrueFalseStatement[];
+}
+
+export type Question = McqQuestion | NumericQuestion | TrueFalseQuestion;
+
+export type ExamType =
+  | "giua-ki-1"
+  | "hoc-ki-1"
+  | "giua-ki-2"
+  | "hoc-ki-2"
+  | "on-tap"
+  | "khao-sat"
+  | "thi-thu-thpt";
+
+export type ExamFormat = "standard" | "thpt-2025";
 
 export interface Lesson {
   slug: string;
@@ -90,6 +117,10 @@ export interface Quiz {
   lessonSlug: string;
   questions: Question[];
   featured?: boolean;
+  examType?: ExamType;
+  examFormat?: ExamFormat;
+  /** Link YouTube chữa cả đề. Để trống thì không hiện khung video. */
+  videoUrl?: string;
 }
 
 export interface QuizSummary {
@@ -103,6 +134,8 @@ export interface QuizSummary {
   questionCount: number;
   lessonSlug: string;
   featured?: boolean;
+  examType?: ExamType;
+  examFormat?: ExamFormat;
 }
 
 export type QuizMode = "timed" | "practice";
@@ -111,6 +144,29 @@ export interface QuestionResult {
   questionId: string;
   answer: string;
   correct: boolean;
+  points?: number;
+  maxPoints?: number;
+}
+
+export interface PublicAccount {
+  id: string;
+  username: string;
+  displayName: string;
+  email: string;
+  role: "student" | "admin";
+}
+
+export interface CourseRegistration {
+  id: string;
+  userId: string;
+  username: string;
+  hoTen: string;
+  dienThoai: string;
+  email: string;
+  lopTruong: string;
+  khoaHoc: string;
+  ghiChu: string;
+  createdAt: string;
 }
 
 export interface QuizAttempt {
