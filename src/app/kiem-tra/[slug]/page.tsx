@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
+import { JsonLd } from "@/components/seo/json-ld";
 import { QuizExperience } from "@/components/quiz/quiz-experience";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { getQuizzes } from "@/data";
+import { examJsonLd, examMeta, fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 import { getPublicQuiz } from "@/lib/server/exams";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -18,8 +20,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const quiz = await getPublicQuiz(slug);
-  if (!quiz) return { title: "Không thấy đề" };
-  return { title: quiz.title, description: quiz.summary };
+  if (!quiz) {
+    return pageMeta({
+      title: fitTitle("Không thấy đề thi"),
+      description: fitDescription("Đề này không còn trên Ôn Toán. Chọn đề thi học kì hoặc đề thi thử THPT toán lớp 10, 11, 12 miễn phí."),
+      path: "/kiem-tra",
+      noindex: true,
+    });
+  }
+  return examMeta(quiz);
 }
 
 export default async function QuizPage({ params }: Props) {
@@ -30,6 +39,7 @@ export default async function QuizPage({ params }: Props) {
 
   return (
     <Shell>
+      <JsonLd data={examJsonLd(quiz)} />
       <Breadcrumbs
         items={[
           { href: "/", label: "Trang chủ" },

@@ -3,8 +3,14 @@ import Link from "next/link";
 import { Shell } from "@/components/site/shell";
 import { readDatabase } from "@/lib/server/db";
 import { formatDateTime } from "@/lib/format";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Hồ sơ đăng ký khóa học" };
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Hồ sơ đăng ký khóa học toán"),
+  description: fitDescription("Danh sách học sinh đăng ký khóa ôn thi toán. Trang quản trị của Ôn Toán, không hiển thị trên Google."),
+  path: "/admin/dang-ky",
+  noindex: true,
+});
 export const dynamic = "force-dynamic";
 
 export default async function RegistrationsPage() {

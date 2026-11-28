@@ -1,22 +1,28 @@
 import type { MetadataRoute } from "next";
-import { getCourses, getLessons, getQuizzes } from "@/data";
+import { connection } from "next/server";
+import { getCourses, getLessons } from "@/data";
 import { GRADES } from "@/lib/labels";
+import { SITE_URL } from "@/lib/seo";
+import { listPublicQuizzes } from "@/lib/server/exams";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://ontoan.vn";
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await connection();
   const now = new Date();
-  const fixed = ["", "/bai-giang", "/kiem-tra", "/tien-do", "/khoa-hoc"].map((path) => ({
-    url: `${base}${path || "/"}`,
-    lastModified: now,
-  }));
+  const quizzes = await listPublicQuizzes();
+  const fixed = ["/", "/bai-giang", "/kiem-tra", "/khoa-hoc"];
   return [
-    ...fixed,
-    ...GRADES.map((grade) => ({ url: `${base}/lop/${grade.id}`, lastModified: now })),
+    ...fixed.map((path) => ({
+      url: path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`,
+      lastModified: now,
+    })),
+    ...GRADES.map((grade) => ({ url: `${SITE_URL}/lop/${grade.id}`, lastModified: now })),
     ...getLessons().map((lesson) => ({
-      url: `${base}/bai-giang/${lesson.slug}`,
+      url: `${SITE_URL}/bai-giang/${lesson.slug}`,
       lastModified: new Date(lesson.updatedAt),
     })),
-    ...getQuizzes().map((quiz) => ({ url: `${base}/kiem-tra/${quiz.slug}`, lastModified: now })),
-    ...getCourses().map((course) => ({ url: `${base}/khoa-hoc/${course.slug}`, lastModified: now })),
+    ...quizzes.map((quiz) => ({ url: `${SITE_URL}/kiem-tra/${quiz.slug}`, lastModified: now })),
+    ...getCourses().map((course) => ({ url: `${SITE_URL}/khoa-hoc/${course.slug}`, lastModified: now })),
   ];
 }

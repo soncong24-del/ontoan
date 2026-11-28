@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Blocks } from "@/components/content/blocks";
 import { LessonCompleteButton, LessonToc, QuickCheck, QuizLink } from "@/components/lesson/lesson-tools";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { Badge } from "@/components/ui/badge";
 import { getLesson, getLessons, getQuiz } from "@/data";
 import { formatDate, pluralMinutes } from "@/lib/format";
 import { gradeLabel, topicLabel } from "@/lib/labels";
+import { fitDescription, fitTitle, lessonJsonLd, lessonMeta, pageMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,8 +19,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const lesson = getLesson(slug);
-  if (!lesson) return { title: "Không thấy bài giảng" };
-  return { title: lesson.title, description: lesson.summary };
+  if (!lesson) {
+    return pageMeta({
+      title: fitTitle("Không thấy bài giảng"),
+      description: fitDescription("Bài giảng này không còn trên Ôn Toán. Xem các bài giảng ôn thi toán miễn phí cho lớp 10, 11, 12."),
+      path: "/bai-giang",
+      noindex: true,
+    });
+  }
+  return lessonMeta(lesson);
 }
 
 export default async function LessonPage({ params }: Props) {
@@ -34,6 +43,7 @@ export default async function LessonPage({ params }: Props) {
 
   return (
     <Shell>
+      <JsonLd data={lessonJsonLd(lesson)} />
       <Breadcrumbs
         items={[
           { href: "/", label: "Trang chủ" },

@@ -3,12 +3,16 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { QuizCatalog } from "@/components/catalog/quiz-catalog";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 import { listPublicQuizzes } from "@/lib/server/exams";
 
-export const metadata: Metadata = {
-  title: "Đề kiểm tra trực tuyến",
-  description: "Đề toán trắc nghiệm lớp 9 đến lớp 12, chấm điểm ngay và có lời giải.",
-};
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Đề thi học kì và đề thi thử THPT"),
+  description: fitDescription(
+    "Làm đề thi học kì, đề giữa kì và đề thi thử THPT toán lớp 10, 11, 12 miễn phí. Chấm điểm ngay, có lời giải từng câu.",
+  ),
+  path: "/kiem-tra",
+});
 export const dynamic = "force-dynamic";
 
 export default async function QuizzesPage() {

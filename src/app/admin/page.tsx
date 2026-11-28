@@ -3,8 +3,14 @@ import Link from "next/link";
 import { Shell } from "@/components/site/shell";
 import { listAdminQuizzes } from "@/lib/server/exams";
 import { examTypeLabel, gradeLabel } from "@/lib/labels";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Quản trị đề" };
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Quản trị đề ôn thi toán"),
+  description: fitDescription("Danh sách đề thi học kì và đề thi thử THPT trong khu quản trị Ôn Toán. Chỉ tài khoản được cấp quyền."),
+  path: "/admin",
+  noindex: true,
+});
 export const dynamic = "force-dynamic";
 
 export default async function AdminHomePage() {

@@ -4,6 +4,7 @@ import { GradeHub } from "@/components/grade/grade-hub";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { getLessonSummaries, getQuizSummaries } from "@/data";
 import { GRADES } from "@/lib/labels";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 import type { GradeLevel } from "@/types";
 
 type Props = { params: Promise<{ grade: string }> };
@@ -15,11 +16,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { grade } = await params;
   const info = GRADES.find((item) => item.id === grade);
-  if (!info) return { title: "Không thấy lớp" };
-  return {
-    title: `${info.label} — ${info.track}`,
-    description: info.blurb,
-  };
+  if (!info) {
+    return pageMeta({
+      title: fitTitle("Không thấy lớp"),
+      description: fitDescription("Chọn toán lớp 10, 11 hoặc 12 để xem bài giảng và đề thi học kì miễn phí trên Ôn Toán."),
+      path: "/",
+      noindex: true,
+    });
+  }
+  return pageMeta({
+    title: fitTitle(`Ôn thi toán lớp ${info.id}`),
+    description: fitDescription(
+      `Ôn thi toán lớp ${info.id} miễn phí: ${info.track}. ${info.blurb} Có bài giảng, đề thi học kì và lời giải.`,
+    ),
+    path: `/lop/${info.id}`,
+  });
 }
 
 export default async function GradePage({ params }: Props) {

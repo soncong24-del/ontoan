@@ -4,8 +4,14 @@ import { ExamEditor } from "@/components/admin/exam-editor";
 import { Shell } from "@/components/site/shell";
 import { getQuizzes } from "@/data";
 import { listExamRecords } from "@/lib/server/exams";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Sửa đề" };
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Sửa đề thi trên Ôn Toán"),
+  description: fitDescription("Sửa câu hỏi, đáp án và lời giải đề thi học kì hoặc đề thi thử THPT. Trang quản trị của Ôn Toán."),
+  path: "/admin",
+  noindex: true,
+});
 export const dynamic = "force-dynamic";
 
 export default async function EditExamPage({ params }: { params: Promise<{ slug: string }> }) {

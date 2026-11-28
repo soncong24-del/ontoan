@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "./globals.css";
+import { JsonLd } from "@/components/seo/json-ld";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
+import { HOME_DESCRIPTION, HOME_TITLE, SITE_NAME, SITE_URL, SHARE_IMAGE, organizationJsonLd } from "@/lib/seo";
 
 const sans = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
@@ -12,23 +14,29 @@ const sans = Be_Vietnam_Pro({
   display: "swap",
 });
 
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ontoan.vn"),
-  title: {
-    default: "Ôn Toán — Học toán và luyện đề trắc nghiệm online",
-    template: "%s · Ôn Toán",
-  },
-  description:
-    "Bài giảng toán có lời giải từng bước và đề kiểm tra trắc nghiệm cho học sinh lớp 9 đến lớp 12. Chấm điểm ngay, ontoan.vn.",
-  applicationName: "Ôn Toán",
-  keywords: ["ôn toán", "ontoan.vn", "bài giảng toán", "đề kiểm tra toán online", "luyện thi vào 10", "THPT"],
+  metadataBase: new URL(SITE_URL),
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: { canonical: `${SITE_URL}/` },
+  verification: googleVerification ? { google: googleVerification } : undefined,
   openGraph: {
-    title: "Ôn Toán — Học toán và luyện đề trắc nghiệm online",
-    description: "Chọn lớp, học bài giảng, làm đề và xem huy hiệu ngay trên máy bạn.",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     locale: "vi_VN",
     type: "website",
-    url: "https://ontoan.vn",
-    siteName: "Ôn Toán",
+    url: `${SITE_URL}/`,
+    siteName: SITE_NAME,
+    images: [{ url: SHARE_IMAGE, width: 1200, height: 630, alt: "Ôn Toán – ôn thi toán miễn phí lớp 10, 11, 12" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    images: [SHARE_IMAGE],
   },
 };
 
@@ -42,6 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Đi tới nội dung
         </a>
+        <JsonLd data={organizationJsonLd()} />
         <SiteHeader />
         <main id="noi-dung" className="flex-1">
           {children}

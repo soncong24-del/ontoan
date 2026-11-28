@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import { ProgressDashboard } from "@/components/progress/progress-dashboard";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { getLessonSummaries, getQuizSummaries } from "@/data";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Tiến độ học tập",
-  description: "Bài đã học, lịch sử làm đề và huy hiệu trên máy này.",
-};
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Tiến độ ôn thi toán của bạn"),
+  description: fitDescription(
+    "Xem bài giảng đã học, điểm đề thi học kì và đề thi thử THPT đã làm trên Ôn Toán. Trang này chỉ dành cho tài khoản của bạn.",
+  ),
+  path: "/tien-do",
+  noindex: true,
+});
 
 export default function ProgressPage() {
   return (

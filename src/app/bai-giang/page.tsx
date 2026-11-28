@@ -3,11 +3,15 @@ import { Suspense } from "react";
 import { LessonCatalog } from "@/components/catalog/lesson-catalog";
 import { Breadcrumbs, Shell } from "@/components/site/shell";
 import { getLessonSummaries } from "@/data";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Bài giảng miễn phí",
-  description: "Bài giảng toán lớp 9 đến lớp 12, có công thức và lời giải từng bước.",
-};
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Bài giảng ôn thi toán lớp 10, 11, 12"),
+  description: fitDescription(
+    "Bài giảng ôn thi toán miễn phí cho lớp 10, 11 và 12, có công thức, ví dụ và lời giải từng bước. Học xong làm đề thi học kì.",
+  ),
+  path: "/bai-giang",
+});
 
 export default function LessonsPage() {
   const lessons = getLessonSummaries();

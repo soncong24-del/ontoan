@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { RichText } from "@/components/math/rich-text";
 import { Shell } from "@/components/site/shell";
@@ -5,7 +6,14 @@ import { buttonVariants } from "@/components/ui/button";
 import { getCourses, getLessonSummaries, getQuizSummaries } from "@/data";
 import { formatVnd, pluralMinutes } from "@/lib/format";
 import { GRADES, difficultyLabel, gradeLabel } from "@/lib/labels";
+import { HOME_DESCRIPTION, HOME_TITLE, pageMeta } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = pageMeta({
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  path: "/",
+});
 
 const steps = [
   {

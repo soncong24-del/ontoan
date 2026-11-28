@@ -6,6 +6,7 @@ import { getCourse, getCourses } from "@/data";
 import { formatVnd, pluralMinutes } from "@/lib/format";
 import { gradeLabel } from "@/lib/labels";
 import { PAYMENT_PROVIDERS } from "@/lib/payments";
+import { courseMeta, fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,8 +17,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const course = getCourse(slug);
-  if (!course) return { title: "Không thấy khóa học" };
-  return { title: course.title, description: course.summary };
+  if (!course) {
+    return pageMeta({
+      title: fitTitle("Không thấy khóa học"),
+      description: fitDescription("Khóa học này không còn. Xem lộ trình ôn thi toán, bài giảng và đề thi học kì miễn phí trên Ôn Toán."),
+      path: "/khoa-hoc",
+      noindex: true,
+    });
+  }
+  return courseMeta(course);
 }
 
 export default async function CoursePage({ params }: Props) {

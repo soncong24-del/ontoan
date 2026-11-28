@@ -5,11 +5,15 @@ import { getCourses } from "@/data";
 import { formatVnd } from "@/lib/format";
 import { gradeLabel } from "@/lib/labels";
 import { PAYMENT_PROVIDERS } from "@/lib/payments";
+import { fitDescription, fitTitle, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Khóa học sắp mở bán",
-  description: "Lộ trình toán có học phí. Đang nhận đăng ký, chưa thu tiền.",
-};
+export const metadata: Metadata = pageMeta({
+  title: fitTitle("Khóa học ôn thi toán sắp mở"),
+  description: fitDescription(
+    "Khóa học ôn thi toán cho lớp 9, 10, 11, 12 sắp mở. Bài giảng và đề thi học kì, đề thi thử THPT trên ontoan.vn vẫn miễn phí.",
+  ),
+  path: "/khoa-hoc",
+});
 
 export default function CoursesPage() {
   const courses = getCourses();

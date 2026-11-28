@@ -80,6 +80,8 @@ Học sinh đăng ký tại `/dang-ky` và đăng nhập tại `/dang-nhap`. Kh�
 
 Site thật đọc Blobs qua API, dùng biến `ONTOAN_BLOBS_TOKEN` (token Netlify, chỉ đặt trong Environment variables của site, không ghi vào git) và `ONTOAN_SITE_ID` nếu cần đổi site. Thiếu token thì đăng ký báo lỗi rõ, còn đề có sẵn trong code vẫn mở được.
 
+Xác minh Google Search Console bằng thẻ HTML: thêm biến `GOOGLE_SITE_VERIFICATION` (nội dung Google cấp, không có tiền tố `google-site-verification=`) rồi deploy lại. Thẻ xuất hiện trên trang chủ. `sitemap.xml` nằm ở https://ontoan.vn/sitemap.xml.
+
 ## Quản trị đề tại `/admin`
 
 Chỉ tài khoản có vai trò quản trị vào được. Trang và API đều kiểm tra vai trò trên máy chủ.

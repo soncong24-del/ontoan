@@ -10,3 +10,13 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# www về đúng tên miền chính. HTTP lên HTTPS do Netlify xử lý trước (301).
+[[redirects]]
+  from = "/*"
+  to = "https://ontoan.vn/:splat"
+  status = 301
+  force = true
+
+  [redirects.conditions]
+    Host = ["www.ontoan.vn"]
